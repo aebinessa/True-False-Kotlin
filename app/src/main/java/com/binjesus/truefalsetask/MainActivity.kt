@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    gameScreen()
+                    GameScreen()
                 }
             }
         }
@@ -55,13 +55,15 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun gameScreen() {
+fun GameScreen() {
     val questions = listOf("android is an operating sysytem","kotlin is a programming language for IOS",
         "Kotlin is supported for android development")
     val answers = listOf(true,false,true)
-    //state variable to keep track of the current question index and update it when the "Next Question" button is pressed.
+    var userScore by remember { mutableStateOf(0) }
+
+    //state variable to keep track of the current question index and update it when the Next Question button is pressed.
     var currentQuestionIndex by remember { mutableIntStateOf(0) }
-    //state variable to hold the feedback message (e.g., "Correct!" or "Wrong!").
+    //state variable to hold the feedback message .
     var feedbackMessage by remember { mutableStateOf("") }
 
     Column(
@@ -69,16 +71,30 @@ fun gameScreen() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(questions[currentQuestionIndex], modifier = Modifier, fontSize = 30.sp, fontWeight = FontWeight.Medium)
-box(feedbackMessage)
+        Text("Score: $userScore", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+
+        Box(feedbackMessage)
 
         Button(modifier = Modifier.width(300.dp),onClick = { currentQuestionIndex = (currentQuestionIndex + 1) % questions.size// to repeat
             feedbackMessage = "" }) {
             Text("next question")
         }
+        Button(
+            modifier = Modifier.width(300.dp),
+            onClick = {
+                currentQuestionIndex = 0
+                userScore = 0
+                feedbackMessage = ""
+            }
+        ) {
+            Text("Restart Game")
+        }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Button(modifier = Modifier.width(180.dp),onClick = {
                 if (answers[currentQuestionIndex]) {
                     feedbackMessage = "Correct"
+                    userScore++
+
                 } else {
                     feedbackMessage = "Wrong"
                 }
@@ -89,6 +105,8 @@ box(feedbackMessage)
             Button(modifier = Modifier.width(180.dp), onClick = {
                 if (!answers[currentQuestionIndex]) {
                     feedbackMessage = "Correct"
+                    userScore++
+
                 } else {
                     feedbackMessage = "Wrong"
                 }
@@ -100,7 +118,7 @@ box(feedbackMessage)
 }
 
 @Composable
-fun box(feedbackMessage: String) {
+fun Box(feedbackMessage: String) {
 
     if (feedbackMessage.isNotEmpty()) {
         Box(
