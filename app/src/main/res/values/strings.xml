@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">trueFalseTask</string>
+    <string-array name="questions_array">
+        <item>android is an operating system</item>
+        <item>kotlin is a programming language for IOS</item>
+        <item>Kotlin is supported for android development</item>
+    </string-array>
 </resources>

@@ -3,6 +3,7 @@ package com.binjesus.truefalsetask
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,15 +29,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.binjesus.truefalsetask.ui.theme.TrueFalseTaskTheme
 
 class MainActivity : ComponentActivity() {
-    val questions = listOf("android is an operating sysytem","kotlin is a programming language for IOS",
-        "Kotlin is supported for android development")
-    val answers = listOf(true,false,true)
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +58,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GameScreen() {
-    val questions = listOf("android is an operating sysytem","kotlin is a programming language for IOS",
-        "Kotlin is supported for android development")
+    val questions = stringArrayResource(id = R.array.questions_array)
     val answers = listOf(true,false,true)
     var userScore by remember { mutableStateOf(0) }
 
@@ -74,7 +75,6 @@ fun GameScreen() {
         Text("Score: $userScore", fontSize = 20.sp, fontWeight = FontWeight.Bold)
 
         Box(feedbackMessage)
-
         Button(modifier = Modifier.width(300.dp),onClick = { currentQuestionIndex = (currentQuestionIndex + 1) % questions.size// to repeat
             feedbackMessage = "" }) {
             Text("next question")
@@ -89,6 +89,7 @@ fun GameScreen() {
         ) {
             Text("Restart Game")
         }
+
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Button(modifier = Modifier.width(180.dp),onClick = {
                 if (answers[currentQuestionIndex]) {
@@ -135,3 +136,4 @@ fun Box(feedbackMessage: String) {
         }
     }
 }
+
